@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* ─── Dark-mode class variant (Tailwind v4) ─────────────────────────────── */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─── Design Tokens ──────────────────────────────────────────────────────── */
+@theme {
+  /* Forest greens — primary brand */
+  --color-forest-50:  #f0f7e8;
+  --color-forest-100: #d8edbe;
+  --color-forest-200: #b3d98a;
+  --color-forest-300: #8abf58;
+  --color-forest-400: #6aab32;
+  --color-forest-500: #4a7a2a;
+  --color-forest-600: #3d6523;
+  --color-forest-700: #2d5016;
+  --color-forest-800: #1e3a0e;
+  --color-forest-900: #0f2006;
+  --color-forest-950: #071106;
+
+  /* Earth / bark browns — secondary */
+  --color-earth-50:  #fdf6ef;
+  --color-earth-100: #f5e4ce;
+  --color-earth-200: #e8c89a;
+  --color-earth-300: #d9a66a;
+  --color-earth-400: #c58545;
+  --color-earth-500: #a06535;
+  --color-earth-600: #6b4f35;
+  --color-earth-700: #4f3a27;
+  --color-earth-800: #35271a;
+  --color-earth-900: #1c140d;
+  --color-earth-950: #0e0a06;
+
+  /* Sand / parchment — warm backgrounds */
+  --color-sand-50:  #fffef8;
+  --color-sand-100: #f5edd6;
+  --color-sand-200: #e8d9b5;
+  --color-sand-300: #d4bf90;
+  --color-sand-400: #bea070;
+  --color-sand-800: #2e2415;
+  --color-sand-900: #1c1712;
+  --color-sand-950: #100e09;
+
+  /* Mist — lighter surface / card */
+  --color-mist-100: #f0e8d5;
+  --color-mist-200: #e2d4be;
+  --color-mist-900: #2a2218;
+  --color-mist-950: #1a1510;
+
+  /* River blue — Kali accent */
+  --color-river-100: #d5eaf2;
+  --color-river-200: #a8d3e5;
+  --color-river-300: #74b8d3;
+  --color-river-400: #5ba3c4;
+  --color-river-500: #3b82a0;
+  --color-river-600: #2e6880;
+  --color-river-700: #224e60;
+
+  /* Gold — premium highlights */
+  --color-gold-300: #e8c54a;
+  --color-gold-400: #d4a017;
+  --color-gold-500: #b8860b;
+  --color-gold-600: #9a6f09;
+
+  /* Leaf — success / eco green */
+  --color-leaf-400: #8fb86a;
+  --color-leaf-500: #739b52;
+  --color-leaf-600: #5a7d3d;
+}
+
+/* ─── Font families (inline — references next/font CSS vars at runtime) ──── */
+@theme inline {
+  --font-heading: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-body:    var(--font-dm-sans), system-ui, -apple-system, sans-serif;
+
+  /* Preserve existing token shape for any Tailwind internals */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+/* ─── CSS custom properties (light & dark) ───────────────────────────────── */
+:root {
+  --background: #f5edd6;      /* sand-100 */
+  --foreground: #2d5016;      /* forest-700 */
+  --surface:    #f0e8d5;      /* mist-100  */
+  --border:     #d4bf90;      /* sand-300  */
+  --text-muted: #6b4f35;      /* earth-600 */
+}
+
+.dark {
+  --background: #1c1712;      /* sand-900  */
+  --foreground: #f5edd6;      /* sand-100  */
+  --surface:    #2a2218;      /* mist-900  */
+  --border:     #4f3a27;      /* earth-700 */
+  --text-muted: #d9a66a;      /* earth-300 */
+}
+
+/* ─── Base styles ─────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  font-size: 1rem;           /* 16px base */
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography defaults */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+  color: var(--foreground);
+}
+
+/* Accessible focus rings */
+:focus-visible {
+  outline: 2px solid #3b82a0; /* river-500 */
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

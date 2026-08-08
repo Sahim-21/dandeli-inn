@@ -1,0 +1,108 @@
+# UI/UX Pro Max - Global Design Rules (Modern Dark Mode)
+
+You are an expert UI/UX designer and frontend engineer following the **UI/UX Pro Max Design Intelligence** system.
+Apply these rules to all UI layout, visual design, component architecture, styling, and user interaction implementation in this repository.
+
+---
+
+## 1. Rule Priorities (Focus Order)
+
+Follow this 1 → 10 priority hierarchy when making design and coding decisions:
+
+1. **Accessibility (CRITICAL)**: Minimum contrast ratio (4.5:1 normal text, 3:1 graphics), visible focus rings (2–4px), ARIA labels on icon buttons, keyboard navigation.
+2. **Touch & Interaction (CRITICAL)**: Touch targets min 44×44px (8px+ gap), instant visual press feedback (80–150ms), no hover-only dependency.
+3. **Performance (HIGH)**: Reserve space for async content (CLS < 0.1), WebP/AVIF images, lazy loading, zero layout thrashing.
+4. **Style Selection (HIGH)**: Modern Dark / OLED Minimalist + Glassmorphism aesthetic. Consistent SVG vector icons (no emojis).
+5. **Layout & Responsive (HIGH)**: Mobile-first, strict 4px/8px spacing grid, safe-area inset compliance, no horizontal scroll.
+6. **Typography & Color (MEDIUM)**: Base 16px body, 1.5–1.75 line height, tokenized semantic colors, desaturated dark-mode text.
+7. **Animation (MEDIUM)**: 150–300ms micro-interactions, transform/opacity only, spring curves, `@media (prefers-reduced-motion)`.
+8. **Forms & Feedback (MEDIUM)**: Persistent labels (no placeholder-only), inline validation on blur, clear error messages with fix actions.
+9. **Navigation Patterns (HIGH)**: Max 5 items on bottom nav, clear active state highlighting, state-preserving back behavior.
+10. **Data & Charts (LOW)**: Accessible colors, direct labeling, tooltips on interaction, tabular monospaced numbers.
+
+---
+
+## 2. Color System & Dark-Mode Palette
+
+### Modern Dark Tokens (OLED / Midnight Glass)
+Always use semantic CSS variables / design tokens instead of hardcoded hex values in component code.
+
+- **Canvas / Background**: `#090D16` (Primary Deep Space) / `#020617` (Slate Black) / `#000000` (OLED Pure)
+- **Surfaces & Cards**: `#0F172A` (Surface Base) / `#1E293B` (Elevated Card) / `rgba(30, 41, 59, 0.7)` (Glass Card)
+- **Primary Text**: `#F8FAFC` (Contrast ratio ≥ 7:1 against background)
+- **Secondary / Muted Text**: `#94A3B8` / `#CBD5E1` (Contrast ratio ≥ 4.5:1)
+- **Borders & Dividers**: `rgba(255, 255, 255, 0.08)` / `#334155`
+- **Primary Brand Accent**: `#6366F1` (Indigo Glow) / `#3B82F6` (Electric Blue)
+- **Secondary Accent**: `#8B5CF6` (Violet Cyber) / `#06B6D4` (Cyan Focus)
+- **Success / Positive**: `#22C55E` (Emerald)
+- **Warning / Alert**: `#F59E0B` (Amber)
+- **Destructive / Error**: `#EF4444` (Rose)
+
+### Dark-Mode Rules
+- **No Harsh Pure White Text on Pitch Black**: Use slightly desaturated off-white (`#F8FAFC`, `#F1F5F9`) to prevent optical halation and eye fatigue.
+- **Desaturated Accent Tones**: Light/vibrant accent tones in dark mode should be tuned for contrast (min 4.5:1 for body text, 3:1 for UI elements).
+- **Depth via Elevation & Glass**: Separate surface layers using background opacity, subtle 1px border highlights (`rgba(255, 255, 255, 0.1)`), and backdrop blur rather than thick dark borders.
+
+---
+
+## 3. Visual Styling & Component Aesthetics
+
+- **Glassmorphism Overlay**:
+  ```css
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  ```
+- **Vector Icons Only**: Use SVG icon libraries (e.g., Lucide, Heroicons). Never use emojis (🎨 🚀 ⚙️) as UI icons or action triggers. Keep icon stroke weight (1.5px–2px) and size tokens (`16px`, `20px`, `24px`) consistent.
+- **Tabular Data**: Use `font-variant-numeric: tabular-nums` or monospaced fonts for numbers, prices, counters, and timers to prevent dynamic width layout shift.
+- **Card Press & Hover Effects**: Use micro scale transforms (`transform: scale(1.02)` or `translateY(-2px)`) with smooth 150–200ms transitions and subtle glow (`box-shadow: 0 0 20px rgba(99, 102, 241, 0.15)`).
+
+---
+
+## 4. Layout, Spacing & Responsive Structure
+
+- **8px Grid Rhythm**: All padding, margins, gaps, and heights must be multiples of 4px/8px (e.g., 4, 8, 12, 16, 24, 32, 48, 64px).
+- **Mobile-First Breakpoints**: `375px` (Mobile), `768px` (Tablet), `1024px` (Desktop), `1440px` (Wide).
+- **Viewport Meta & Zoom**: `width=device-width, initial-scale=1`. **NEVER** disable pinch-to-zoom (`user-scalable=no`).
+- **Safe-Area Awareness**: Respect top/bottom safe-area insets (`env(safe-area-inset-top)`, `env(safe-area-inset-bottom)`) for fixed bottom bars, header bars, and FAB buttons.
+- **Line Length**: Limit long-form reading body text to 60–75 characters per line on desktop (35–60 on mobile).
+
+---
+
+## 5. Animation & Motion Rules
+
+- **Timing Budget**: Micro-interactions 150–250ms, modal/drawer transitions 250–300ms. Never exceed 400ms for UI transitions.
+- **Easing**: `ease-out` (cubic-bezier(0.16, 1, 0.3, 1)) for enter elements, `ease-in` for exit elements. Exit animations must be 60–70% faster than enter animations.
+- **GPU-Accelerated Props**: Animate ONLY `transform` (scale, translate) and `opacity`. **NEVER** animate `width`, `height`, `top`, `left`, `margin`, or `padding` as it causes layout reflows (CLS).
+- **Reduced Motion**: Respect accessibility settings:
+  ```css
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  ```
+
+---
+
+## 6. Forms, Feedback & Accessibility
+
+- **Input Labels**: Every input field MUST have a visible `<label>` (never rely on `placeholder` as the only label).
+- **Inline Validation**: Validate fields on blur (`onBlur`), show error message below the field, and auto-focus the first invalid input on form submission error.
+- **Focus Rings**: Never remove focus rings without providing a visible replacement. Use `focus-visible` with a high-contrast ring (`outline: 2px solid #6366F1; outline-offset: 2px;`).
+- **Touch Target Minimum**: Every button, link, tab, or interactive element must have a minimum interactive tap target of **44×44px** (or use negative margins / padded hit area).
+
+---
+
+## 7. Anti-Patterns to Avoid ❌
+
+- ❌ **Gray-on-gray low contrast text**: Primary text must meet 4.5:1 WCAG AA minimum against dark backgrounds.
+- ❌ **Emojis as structural UI icons**: Emojis render inconsistently across platforms and break design token control.
+- ❌ **Hardcoded raw hex values in components**: Use semantic CSS tokens (`var(--surface-card)`, `var(--text-primary)`).
+- ❌ **Hover-only interactive states**: Hover effects must be backed by touch-friendly click/tap states.
+- ❌ **Animating layout properties**: Avoid animating `width`, `height`, `grid-template`, or `margin`.
+- ❌ **Placeholder-only form fields**: Placeholders disappear on typing, destroying field context.
+- ❌ **Disabling viewport zoom**: Never set `user-scalable=no` or `maximum-scale=1.0`.
+- ❌ **Missing focus indicators**: Never use `outline: none` without providing a custom `:focus-visible` ring.
