@@ -1,3 +1,5 @@
+"use client";
+
 /* ─── Nav links ──────────────────────────────────────────────────────────── */
 const navLinks = [
   { label: "Home", href: "#hero" },
@@ -6,6 +8,7 @@ const navLinks = [
   { label: "Sightseeing", href: "#sightseeing" },
   { label: "Location", href: "#location" },
   { label: "Reviews", href: "#reviews" },
+  { label: "FAQ", href: "#faq" },
   { label: "Book Now", href: "#booking" },
 ] as const;
 
@@ -80,6 +83,26 @@ function PinIcon() {
   );
 }
 
+function InstagramIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-4 h-4 text-pink-400 shrink-0"
+      aria-hidden="true"
+    >
+      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
 /* ─── Component ──────────────────────────────────────────────────────────── */
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -87,25 +110,29 @@ export default function Footer() {
   return (
     <footer id="footer" className="bg-earth-950 dark:bg-sand-950 text-sand-200 border-t border-earth-800/80">
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
           {/* ── Column 1: Lodge Brand & Address ───────────────────────── */}
           <div>
-            <a href="#hero" className="font-heading text-2xl font-semibold text-sand-100 block mb-3 hover:text-gold-400 transition-colors">
-              Kali Riverside Lodge
-            </a>
-            <p className="text-sm text-sand-300/80 leading-relaxed mb-4">
-              A peaceful forest retreat nestled directly on the banks of the Kali River in Dandeli, Karnataka.
+            <h2 className="font-heading text-2xl font-bold text-sand-100 tracking-tight mb-3">
+              Dandeli Inn
+            </h2>
+            <p className="text-sm text-sand-300/80 leading-relaxed mb-6">
+              Comfortable, budget-friendly stay in the heart of Dandeli — just 300 m from the bus stand.
             </p>
-            <div className="flex items-start gap-2.5 text-xs text-sand-300/75">
+            <div className="flex items-start gap-2.5 text-xs text-sand-300/80">
               <PinIcon />
-              <span>Kali Riverside Lodge, Dandeli, Uttara Kannada District, Karnataka — 581325</span>
+              <address className="not-italic leading-relaxed">
+                J.N Road, opp. Sunday Market, Bangur Nagar,
+                <br />
+                Dandeli, Karnataka 581325
+              </address>
             </div>
           </div>
 
           {/* ── Column 2: Quick Navigation ────────────────────────────── */}
           <div>
             <h3 className="font-heading text-lg font-semibold text-sand-100 mb-4">
-              Quick Navigation
+              Quick Links
             </h3>
             <ul className="grid grid-cols-2 gap-2 text-sm">
               {navLinks.map((link) => (
@@ -130,35 +157,47 @@ export default function Footer() {
               {/* Phone Tel Link */}
               <li>
                 <a
-                  href="tel:+919591524573"
+                  href="tel:+917259109986"
                   className="flex items-center gap-2.5 text-sand-200 hover:text-gold-400 transition-colors"
                 >
                   <PhoneIcon />
-                  <span>Call: +91 95915 24573</span>
+                  <span>Call: +91 72591 09986</span>
                 </a>
               </li>
 
               {/* WhatsApp wa.me Link */}
               <li>
                 <a
-                  href="https://wa.me/919591524573"
+                  href="https://wa.me/917259109986"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 text-sand-200 hover:text-emerald-400 transition-colors"
                 >
                   <WhatsAppIcon />
-                  <span>WhatsApp: +91 95915 24573</span>
+                  <span>WhatsApp: +91 72591 09986</span>
+                </a>
+              </li>
+
+              {/* Instagram Link */}
+              <li>
+                <a
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  className="flex items-center gap-2.5 text-sand-200 hover:text-pink-400 transition-colors cursor-pointer"
+                >
+                  <InstagramIcon />
+                  <span>Instagram</span>
                 </a>
               </li>
 
               {/* Email Link */}
               <li>
                 <a
-                  href="mailto:stay@kaliriversidelodge.com"
+                  href="mailto:stay@dandeliinn.com"
                   className="flex items-center gap-2.5 text-sand-200 hover:text-river-300 transition-colors"
                 >
                   <MailIcon />
-                  <span>stay@kaliriversidelodge.com</span>
+                  <span>stay@dandeliinn.com</span>
                 </a>
               </li>
             </ul>
@@ -167,7 +206,7 @@ export default function Footer() {
 
         {/* ── Bottom Copyright Bar ───────────────────────────────────── */}
         <div className="border-t border-sand-100/10 mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-sand-400/80 gap-3">
-          <p>&copy; {currentYear} Kali Riverside Lodge. All rights reserved.</p>
+          <p>&copy; {currentYear} Dandeli Inn. All rights reserved.</p>
           <p className="italic text-sand-400/60">Dandeli, Karnataka, India</p>
         </div>
       </div>

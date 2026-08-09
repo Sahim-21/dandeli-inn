@@ -131,3 +131,50 @@ h1, h2, h3, h4, h5, h6 {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* ─── react-day-picker v10 theme — Dandeli Inn palette ───────────────────── */
+/* Applied inside the booking form's dark forest background                   */
+.rdp-root {
+  /* Layout */
+  --rdp-font-family:              var(--font-body);
+  --rdp-cell-size:                2.25rem;
+  --rdp-border-radius:            0.5rem;
+
+  /* Neutral colours (light: we're always inside the dark forest section) */
+  --rdp-background-color:         transparent;
+  --rdp-foreground-color:         #f5edd6;    /* sand-100 */
+
+  /* Day cell defaults */
+  --rdp-day-color:                #d4bf90;    /* sand-300 */
+  --rdp-day-background-color:     transparent;
+  --rdp-day-background-color-hover: rgba(245,237,214,0.12);
+  --rdp-day-border-radius:        0.5rem;
+
+  /* Today */
+  --rdp-today-color:              #d4a017;    /* gold-400 */
+
+  /* Selected / accent */
+  --rdp-accent-color:             #b8860b;    /* gold-500 */
+  --rdp-accent-background-color:  #b8860b;
+  --rdp-selected-color:           #071106;    /* forest-950 — text on selected */
+  --rdp-selected-border:          none;
+
+  /* Disabled */
+  --rdp-disabled-opacity:         0.3;
+
+  /* Nav / caption */
+  --rdp-nav-button-color:         #d4bf90;
+  --rdp-nav-button-background-color: rgba(245,237,214,0.08);
+  --rdp-nav-button-background-color-hover: rgba(245,237,214,0.18);
+
+  /* Weekday header row */
+  --rdp-weekday-color:            #bea070;    /* sand-400 */
+  --rdp-weekday-opacity:          1;
+
+  /* Outside days */
+  --rdp-outside-color:            rgba(212,191,144,0.3);
+
+  /* Range (not used — single mode — but set anyway) */
+  --rdp-range-middle-background-color: rgba(184,134,11,0.25);
+  --rdp-range-middle-color:       #f5edd6;
+}

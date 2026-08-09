@@ -12,6 +12,7 @@ const links = [
   { label: "Sightseeing", href: "#sightseeing" },
   { label: "Location", href: "#location" },
   { label: "Reviews", href: "#reviews" },
+  { label: "FAQ", href: "#faq" },
   { label: "Book Now", href: "#booking" },
 ] as const;
 
@@ -158,7 +159,7 @@ export default function Navbar() {
           href="#hero"
           className="font-heading text-xl font-semibold text-forest-700 dark:text-forest-300 hover:text-forest-500 dark:hover:text-forest-200 transition-colors"
         >
-          Kali Riverside Lodge
+          Dandeli Inn
         </a>
 
         {/* ── Desktop nav ────────────────────────────────────────────── */}

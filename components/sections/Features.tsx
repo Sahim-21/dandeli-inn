@@ -6,15 +6,27 @@ import type { ReactNode } from "react";
 /* ─── Animation variants ─────────────────────────────────────────────────── */
 const container: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
+  show: { transition: { staggerChildren: 0.06 } },
 };
 
 const card: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
 /* ─── SVG icons (24×24, stroke 1.75) ─────────────────────────────────────── */
+function DeskIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+      <path d="M4 19V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v14" />
+      <path d="M4 11h16" />
+      <path d="M12 11v8" />
+      <path d="M8 19v2" />
+      <path d="M16 19v2" />
+    </svg>
+  );
+}
+
 function WifiIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
@@ -26,20 +38,49 @@ function WifiIcon() {
   );
 }
 
-function BonfireIcon() {
+function AcIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
-      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+      <rect width="18" height="8" x="3" y="3" rx="2" />
+      <path d="M6 11v3" />
+      <path d="M10 11v4" />
+      <path d="M14 11v4" />
+      <path d="M18 11v3" />
+      <path d="M7 19c.7 1.3 2 2 3.5 2s2.8-.7 3.5-2" />
     </svg>
   );
 }
 
-function RestaurantIcon() {
+function TvIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
-      <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2" />
-      <path d="M7 2v20" />
-      <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7" />
+      <rect width="20" height="15" x="2" y="3" rx="2" />
+      <path d="m17 21-5-3-5 3" />
+    </svg>
+  );
+}
+
+function HotWaterIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+      <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" />
+    </svg>
+  );
+}
+
+function HousekeepingIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+      <path d="M12 3l1.91 3.87 4.27.62-3.09 3.01.73 4.25L12 12.74 8.18 14.75l.73-4.25-3.09-3.01 4.27-.62z" />
+      <path d="M5 21h14" />
+    </svg>
+  );
+}
+
+function PowerBackupIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
     </svg>
   );
 }
@@ -53,29 +94,6 @@ function ParkingIcon() {
   );
 }
 
-function TrailIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
-      <path d="M17 6.1H3" />
-      <path d="M21 12.1H3" />
-      <path d="M15.1 18H3" />
-      <path d="m17 18 2-4 2 4" />
-      <path d="m19 6-2-4" />
-      <path d="m21 6-2-4" />
-    </svg>
-  );
-}
-
-function PoolIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.75} strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
-      <path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
-      <path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
-      <path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1" />
-    </svg>
-  );
-}
-
 /* ─── Feature data ───────────────────────────────────────────────────────── */
 interface Feature {
   icon: ReactNode;
@@ -85,34 +103,44 @@ interface Feature {
 
 const features: Feature[] = [
   {
+    icon: <DeskIcon />,
+    title: "Writing desk and chair",
+    description: "Dedicated work surface and comfortable seating provided in every room.",
+  },
+  {
     icon: <WifiIcon />,
     title: "Free Wi-Fi",
-    description: "Stay connected with complimentary high-speed internet across the property.",
+    description: "Complimentary high-speed internet access available for all guests.",
   },
   {
-    icon: <BonfireIcon />,
-    title: "Bonfire & BBQ",
-    description: "Gather under the stars for a riverside bonfire with fresh barbecue every evening.",
+    icon: <AcIcon />,
+    title: "Air conditioning",
+    description: "Climate-controlled comfort with both AC and Non-AC room options.",
   },
   {
-    icon: <RestaurantIcon />,
-    title: "In-house Restaurant",
-    description: "Savour authentic Karnataka cuisine and freshly caught river fish, made to order.",
+    icon: <TvIcon />,
+    title: "Flat-screen TV",
+    description: "In-room entertainment for relaxing after a full day of sightseeing.",
+  },
+  {
+    icon: <HotWaterIcon />,
+    title: "Hot water, all day",
+    description: "Continuous hot water supply for refreshing showers anytime.",
+  },
+  {
+    icon: <HousekeepingIcon />,
+    title: "Daily housekeeping",
+    description: "Clean, fresh linen and thoroughly maintained rooms every day.",
+  },
+  {
+    icon: <PowerBackupIcon />,
+    title: "Power backup",
+    description: "Uninterrupted power supply ensuring comfort throughout your stay.",
   },
   {
     icon: <ParkingIcon />,
-    title: "Free Parking",
-    description: "Secure, shaded parking for cars and two-wheelers right at the lodge entrance.",
-  },
-  {
-    icon: <TrailIcon />,
-    title: "Nature Trails",
-    description: "Guided forest walks through the Dandeli wildlife sanctuary, steps from your room.",
-  },
-  {
-    icon: <PoolIcon />,
-    title: "Swimming Pool",
-    description: "Cool off in our open-air pool overlooking the Kali river and forest canopy.",
+    title: "Free parking",
+    description: "On-site parking space for guest cars and two-wheelers.",
   },
 ];
 
@@ -133,42 +161,44 @@ export default function Features() {
           className="text-center mb-14"
         >
           <h2 className="font-heading text-4xl md:text-5xl text-forest-700 dark:text-forest-300 font-semibold">
-            Lodge Amenities
+            Room &amp; Lodge Features
           </h2>
           <p className="mt-3 text-earth-600 dark:text-earth-300 max-w-lg mx-auto">
-            Everything you need for a comfortable forest getaway, all included with your stay.
+            Essential comforts included with every stay at Dandeli Inn.
           </p>
         </motion.div>
 
-        {/* Feature grid */}
+        {/* Feature grid — 4 columns on large screens */}
         <motion.div
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-60px" }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
         >
           {features.map((feature) => (
             <motion.article
               key={feature.title}
               variants={card}
               className="group bg-mist-100 dark:bg-mist-900 rounded-2xl p-6 border border-sand-300 dark:border-earth-700
-                         transition-shadow duration-200 hover:shadow-lg hover:shadow-forest-700/5 dark:hover:shadow-forest-400/5 cursor-default"
+                         transition-shadow duration-200 hover:shadow-lg hover:shadow-forest-700/5 dark:hover:shadow-forest-400/5 cursor-default flex flex-col justify-between"
             >
-              {/* Icon badge */}
-              <div className="w-11 h-11 rounded-xl bg-forest-100 dark:bg-forest-900 flex items-center justify-center text-forest-600 dark:text-forest-300 mb-4">
-                {feature.icon}
+              <div>
+                {/* Icon badge */}
+                <div className="w-11 h-11 rounded-xl bg-forest-100 dark:bg-forest-900 flex items-center justify-center text-forest-600 dark:text-forest-300 mb-4">
+                  {feature.icon}
+                </div>
+
+                {/* Title */}
+                <h3 className="font-heading text-base font-semibold text-forest-700 dark:text-forest-300 leading-snug">
+                  {feature.title}
+                </h3>
+
+                {/* Description */}
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-earth-600 dark:text-earth-300">
+                  {feature.description}
+                </p>
               </div>
-
-              {/* Title */}
-              <h3 className="font-heading text-lg font-semibold text-forest-700 dark:text-forest-300">
-                {feature.title}
-              </h3>
-
-              {/* Description */}
-              <p className="mt-2 text-sm leading-relaxed text-earth-600 dark:text-earth-300">
-                {feature.description}
-              </p>
             </motion.article>
           ))}
         </motion.div>

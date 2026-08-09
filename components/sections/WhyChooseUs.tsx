@@ -15,7 +15,7 @@ const item: Variants = {
 };
 
 /* ─── SVG icons (24×24) ─────────────────────────────────────────────────── */
-function RiverLocationIcon() {
+function MapPinIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@ function RiverLocationIcon() {
       className="w-6 h-6"
       aria-hidden="true"
     >
-      <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 20 10.2c0 7.3-8 11.8-8 11.8z" />
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
       <circle cx="12" cy="10" r="3" />
     </svg>
   );
@@ -102,9 +102,9 @@ interface TrustPoint {
 
 const trustPoints: TrustPoint[] = [
   {
-    icon: <RiverLocationIcon />,
-    title: "Prime location on the banks of the Kali River",
-    description: "Nestled directly on the scenic riverbank, offering tranquil water views and immediate access to nature.",
+    icon: <MapPinIcon />,
+    title: "Convenient location in the heart of Dandeli",
+    description: "Situated just 300 m from the central bus stand in Bangur Nagar, offering easy access to transport, markets, and regional attractions.",
   },
   {
     icon: <HeartUsersIcon />,

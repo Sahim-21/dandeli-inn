@@ -11,7 +11,7 @@ type BookingContextType = {
 const BookingContext = createContext<BookingContextType | undefined>(undefined);
 
 export function BookingProvider({ children }: { children: ReactNode }) {
-  const [selectedRoomId, setSelectedRoomId] = useState<string>("standard");
+  const [selectedRoomId, setSelectedRoomId] = useState<string>("1-sharing-nonac");
 
   const selectRoomAndScroll = (roomId: string) => {
     setSelectedRoomId(roomId);

@@ -47,31 +47,31 @@ const attractions: SightseeingItem[] = [
     name: "Kali River",
     description: "River rafting & adrenaline-filled water sports on white-water rapids.",
     distance: "3 km",
-    image: "/images/sightseeing/kali-river.jpg",
+    image: "/images/sightseeing/kali-river-v2.jpg",
   },
   {
     name: "Syntheri Rocks",
     description: "Dramatic 300 ft monolithic granite rock formation & river ravine.",
     distance: "20 km",
-    image: "/images/sightseeing/syntheri-rocks.jpg",
+    image: "/images/sightseeing/syntheri-rocks-v2.jpg",
   },
   {
     name: "Kavala Caves",
     description: "Ancient limestone cave temple reached by scenic forest steps.",
     distance: "22 km",
-    image: "/images/sightseeing/kavala-caves.jpg",
+    image: "/images/sightseeing/kavala-caves-v2.jpg",
   },
   {
     name: "Dandeli Wildlife Sanctuary",
     description: "Spot rare Malabar pied hornbills, black panthers & exotic flora.",
     distance: "5 km",
-    image: "/images/sightseeing/dandeli-wildlife.jpg",
+    image: "/images/sightseeing/dandeli-wildlife-v2.jpg",
   },
   {
     name: "Supa Dam",
     description: "Scenic reservoir viewpoint surrounded by lush Western Ghats hills.",
     distance: "25 km",
-    image: "/images/sightseeing/supa-dam.jpg",
+    image: "/images/sightseeing/supa-dam-v2.jpg",
   },
 ];
 

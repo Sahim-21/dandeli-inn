@@ -11,7 +11,7 @@ export const reviews: GoogleReview[] = [
     author_name: "Ananya Sharma",
     rating: 5,
     relative_time_description: "a week ago",
-    text: "An absolute slice of paradise in Dandeli! The riverside views right from our Deluxe Cottage balcony were breathtaking. Staff were incredibly hospitable, helping us organize rafting and wildlife safaris smoothly. Will definitely visit again!",
+    text: "An absolute gem in Dandeli! Dandeli Inn is super convenient, just steps from the main bus stand. Staff were incredibly hospitable, helping us organize rafting and wildlife safaris smoothly. Will definitely visit again!",
   },
   {
     author_name: "Rahul Deshmukh",

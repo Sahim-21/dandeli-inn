@@ -1,21 +1,20 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { reviews } from "@/lib/reviews";
 
-/* ─── Motion Variants ────────────────────────────────────────────────────── */
+/* ─── Motion ─────────────────────────────────────────────────────────────── */
 const container: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.08 } },
+  show: { transition: { staggerChildren: 0.1 } },
 };
 
-const cardVariant: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
 };
 
-/* ─── Google 'G' Icon ────────────────────────────────────────────────────── */
-function GoogleGIcon({ className = "w-4 h-4" }: { className?: string }) {
+/* ─── Google "G" icon ────────────────────────────────────────────────────── */
+function GoogleGIcon({ className = "w-5 h-5" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
       <path
@@ -38,37 +37,148 @@ function GoogleGIcon({ className = "w-4 h-4" }: { className?: string }) {
   );
 }
 
-/* ─── Star Rating Helper ─────────────────────────────────────────────────── */
-function StarRating({ rating }: { rating: number }) {
+/* ─── Star icon ──────────────────────────────────────────────────────────── */
+function StarFilled({ className }: { className?: string }) {
   return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} out of 5 stars`}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <svg
-          key={star}
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill={star <= rating ? "currentColor" : "none"}
-          stroke="currentColor"
-          strokeWidth={1.5}
-          className={`w-4 h-4 ${
-            star <= rating ? "text-gold-400 fill-gold-400" : "text-sand-400/30"
-          }`}
-          aria-hidden="true"
-        >
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg>
-      ))}
-    </div>
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className ?? "w-5 h-5"}
+      aria-hidden="true"
+    >
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
   );
 }
 
-/* ─── Initials Generator ─────────────────────────────────────────────────── */
-function getInitials(name: string): string {
-  const parts = name.trim().split(" ");
-  if (parts.length >= 2) {
-    return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
-  }
-  return name.slice(0, 2).toUpperCase();
+function StarHalf({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className ?? "w-5 h-5"}
+      aria-hidden="true"
+    >
+      {/* left half filled, right half outlined */}
+      <defs>
+        <linearGradient id="half-fill">
+          <stop offset="50%" stopColor="currentColor" />
+          <stop offset="50%" stopColor="transparent" />
+        </linearGradient>
+      </defs>
+      <polygon
+        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+        fill="url(#half-fill)"
+        stroke="currentColor"
+        strokeWidth={1.5}
+      />
+    </svg>
+  );
+}
+
+/* ─── Trust point data ───────────────────────────────────────────────────── */
+const trustPoints = [
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-5 h-5"
+        aria-hidden="true"
+      >
+        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" />
+        <circle cx="12" cy="10" r="3" />
+      </svg>
+    ),
+    heading: "Unbeatable Central Location",
+    body: "Just 300 m from Dandeli Bus Stand — step off and you're practically at our door, no auto-rickshaw needed.",
+  },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-5 h-5"
+        aria-hidden="true"
+      >
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+        <polyline points="9 22 9 12 15 12 15 22" />
+      </svg>
+    ),
+    heading: "Clean & Well-Maintained Rooms",
+    body: "Guests consistently highlight neat, tidy rooms with fresh linen — maintained to a high standard of cleanliness.",
+  },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-5 h-5"
+        aria-hidden="true"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+    heading: "Friendly, Helpful Front Desk",
+    body: "Our staff are known for being approachable and responsive — happy to assist with bookings, local tips, and anything you need.",
+  },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.75}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-5 h-5"
+        aria-hidden="true"
+      >
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+      </svg>
+    ),
+    heading: "Safe & Secure Environment",
+    body: "The property is under CCTV surveillance 24/7, providing peace of mind for solo travellers and families alike.",
+  },
+] as const;
+
+/* ─── External link icon ─────────────────────────────────────────────────── */
+function ExternalLinkIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-4 h-4"
+      aria-hidden="true"
+    >
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+      <polyline points="15 3 21 3 21 9" />
+      <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  );
 }
 
 /* ─── Component ──────────────────────────────────────────────────────────── */
@@ -78,8 +188,9 @@ export default function Reviews() {
       id="reviews"
       className="py-24 px-4 bg-forest-700 dark:bg-forest-900 text-sand-100"
     >
-      <div className="max-w-6xl mx-auto">
-        {/* Section Header */}
+      <div className="max-w-4xl mx-auto">
+
+        {/* ── Rating badge + heading ──────────────────────────────────── */}
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -87,79 +198,89 @@ export default function Reviews() {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="text-center mb-14"
         >
-          <div className="inline-flex items-center gap-2 bg-sand-100/10 px-3.5 py-1.5 rounded-full border border-sand-100/20 mb-4 text-xs text-sand-200">
-            <GoogleGIcon className="w-4 h-4" />
-            <span>4.9 / 5.0 Rating from verified Google Reviews</span>
+          <h2 className="font-heading text-4xl md:text-5xl text-sand-100 font-semibold mb-6">
+            What Guests Say
+          </h2>
+
+          {/* Rating card */}
+          <div className="inline-flex flex-col sm:flex-row items-center gap-5 bg-sand-100/10 border border-sand-100/20 backdrop-blur-sm rounded-2xl px-8 py-6 shadow-lg">
+            {/* Google logo + score */}
+            <div className="flex items-center gap-3">
+              <GoogleGIcon className="w-9 h-9 shrink-0" />
+              <div className="text-left">
+                <p className="text-3xl font-bold text-sand-50 leading-none">
+                  4.5
+                  <span className="text-base font-normal text-sand-300/80 ml-1">
+                    / 5
+                  </span>
+                </p>
+                <p className="text-xs text-sand-300/75 mt-0.5">
+                  292 Google Reviews
+                </p>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="hidden sm:block w-px h-10 bg-sand-100/20" />
+
+            {/* Stars */}
+            <div
+              className="flex items-center gap-0.5 text-gold-400"
+              aria-label="4.5 out of 5 stars"
+            >
+              <StarFilled className="w-6 h-6" />
+              <StarFilled className="w-6 h-6" />
+              <StarFilled className="w-6 h-6" />
+              <StarFilled className="w-6 h-6" />
+              <StarHalf className="w-6 h-6" />
+            </div>
           </div>
 
-          <h2 className="font-heading text-4xl md:text-5xl text-sand-100 font-semibold">
-            Guest Reviews
-          </h2>
-          <p className="mt-3 text-sand-200/90 max-w-lg mx-auto text-sm md:text-base">
-            See what our guests say about their stay at Kali Riverside Lodge.
-          </p>
+          {/* CTA button */}
+          <div className="mt-6">
+            <a
+              href="https://www.google.com/maps/place/?q=place_id:ChIJUau4rbUhvzsRxXDL6lUkipg"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-sand-100/25 text-sand-200 hover:bg-sand-100/10 hover:text-sand-100 transition-colors text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-river-400"
+            >
+              <GoogleGIcon className="w-4 h-4" />
+              Read All Reviews on Google
+              <ExternalLinkIcon />
+            </a>
+          </div>
         </motion.div>
 
-        {/* Reviews Cards Grid */}
+        {/* ── Trust points grid ───────────────────────────────────────── */}
         <motion.div
           variants={container}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true, margin: "-40px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 gap-5"
         >
-          {reviews.map((rev) => (
-            <motion.article
-              key={rev.author_name}
-              variants={cardVariant}
-              className="bg-sand-100/10 dark:bg-sand-950/40 rounded-2xl p-6 border border-sand-100/20 backdrop-blur-sm flex flex-col justify-between shadow-lg"
+          {trustPoints.map((point) => (
+            <motion.div
+              key={point.heading}
+              variants={fadeUp}
+              className="flex items-start gap-4 bg-sand-100/10 border border-sand-100/15 rounded-2xl p-5 backdrop-blur-sm"
             >
+              {/* Icon bubble */}
+              <span className="shrink-0 w-10 h-10 rounded-xl bg-sand-100/10 text-gold-400 flex items-center justify-center mt-0.5">
+                {point.icon}
+              </span>
               <div>
-                {/* Header: Circle Avatar + Name + Relative Time */}
-                <div className="flex items-center justify-between gap-3 mb-4">
-                  <div className="flex items-center gap-3">
-                    {/* Circle Avatar with Initials */}
-                    <div className="w-10 h-10 rounded-full bg-forest-900/80 border border-sand-100/30 text-sand-100 flex items-center justify-center font-semibold text-sm shrink-0">
-                      {getInitials(rev.author_name)}
-                    </div>
-                    <div>
-                      <h3 className="font-heading text-base font-semibold text-sand-100 leading-snug">
-                        {rev.author_name}
-                      </h3>
-                      <p className="text-xs text-sand-300/75">
-                        {rev.relative_time_description}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Google 'G' Icon */}
-                  <div className="p-1.5 rounded-full bg-sand-100/10 shrink-0" title="Verified Google Review">
-                    <GoogleGIcon className="w-4 h-4" />
-                  </div>
-                </div>
-
-                {/* Rating */}
-                <div className="mb-3">
-                  <StarRating rating={rev.rating} />
-                </div>
-
-                {/* Review Text */}
-                <p className="text-sm leading-relaxed text-sand-200/90 font-sans">
-                  &ldquo;{rev.text}&rdquo;
+                <h3 className="font-heading text-base font-semibold text-sand-100 leading-snug mb-1">
+                  {point.heading}
+                </h3>
+                <p className="text-sm text-sand-200/80 leading-relaxed">
+                  {point.body}
                 </p>
               </div>
-
-              {/* Card Footer: Posted on Google Badge */}
-              <div className="mt-5 pt-4 border-t border-sand-100/15 flex items-center justify-between text-xs text-sand-300/80">
-                <span className="inline-flex items-center gap-1.5 font-medium">
-                  <GoogleGIcon className="w-3.5 h-3.5" />
-                  Posted on Google
-                </span>
-                <span className="text-[11px] text-gold-400">Verified Stay</span>
-              </div>
-            </motion.article>
+            </motion.div>
           ))}
         </motion.div>
+
       </div>
     </section>
   );
