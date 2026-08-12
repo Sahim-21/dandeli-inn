@@ -134,6 +134,12 @@ function WhatsAppIcon() {
   );
 }
 
+/* ─── Types ──────────────────────────────────────────────────────────────── */
+interface RoomSelection {
+  roomId: string;
+  count: number;
+}
+
 /* ─── Main Component ─────────────────────────────────────────────────────── */
 export default function Booking() {
   const { selectedRoomId, setSelectedRoomId } = useBooking();
@@ -143,7 +149,35 @@ export default function Booking() {
   const [checkout, setCheckout] = useState<Date | undefined>(undefined);
   const [phone, setPhone] = useState("");
 
-  const selectedRoom = rooms.find((r) => r.id === selectedRoomId) || rooms[0];
+  /* ── Room selections — one or more rows ─────────────────────────────────── */
+  const [roomSelections, setRoomSelections] = useState<RoomSelection[]>([
+    { roomId: "", count: 1 },
+  ]);
+
+  const [cleared, setCleared] = useState(false);
+
+  /* Sync context → row[0] when "Book This Room" fires from the Rooms section */
+  useEffect(() => {
+    // If we haven't cleared the initial context state yet...
+    if (!cleared) {
+      if (selectedRoomId !== "") {
+        setSelectedRoomId(""); // Clear it so any future click registers as a change
+      }
+      setCleared(true); // Mark as cleared
+      return;
+    }
+
+    // Normal sync behavior for actual clicks
+    if (selectedRoomId) {
+      setRoomSelections((prev) => {
+        if (prev[0]?.roomId === selectedRoomId) return prev; // no change needed
+        const next = [...prev];
+        next[0] = { ...next[0], roomId: selectedRoomId };
+        return next;
+      });
+    }
+  }, [selectedRoomId, cleared, setSelectedRoomId]);
+
   const todayDate = today();
 
   /* ── Derived values ─────────────────────────────────────────────────────── */
@@ -152,15 +186,54 @@ export default function Booking() {
       ? calcNights(checkin, checkout)
       : 0;
 
-  const estimatedCost = nights > 0 ? selectedRoom.pricePerNight * nights : 0;
+  const estimatedCost =
+    nights > 0
+      ? roomSelections.reduce((sum, sel) => {
+          const room = rooms.find((r) => r.id === sel.roomId);
+          return sum + (room ? room.pricePerNight * nights * sel.count : 0);
+        }, 0)
+      : 0;
 
   /* ── Validation ─────────────────────────────────────────────────────────── */
+  const validSelections = roomSelections.filter((s) => s.roomId !== "");
   const isValid =
-    name.trim().length > 0 &&
-    selectedRoomId.length > 0 &&
+    validSelections.length > 0 &&
+    validSelections.every((s) => s.count >= 1) &&
     checkin !== undefined &&
     checkout !== undefined &&
     checkout > checkin;
+
+  /* ── Room selection helpers ─────────────────────────────────────────────── */
+  function updateRoomId(index: number, roomId: string) {
+    setRoomSelections((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], roomId };
+      return next;
+    });
+    // Keep BookingContext in sync with the first row
+    if (index === 0) setSelectedRoomId(roomId);
+  }
+
+  function updateCount(index: number, count: number) {
+    setRoomSelections((prev) => {
+      const next = [...prev];
+      next[index] = { ...next[index], count: Math.min(5, Math.max(1, count)) };
+      return next;
+    });
+  }
+
+  function removeRow(index: number) {
+    setRoomSelections((prev) => {
+      const next = prev.filter((_, i) => i !== index);
+      // Keep context in sync if first row was removed
+      if (index === 0 && next.length > 0) setSelectedRoomId(next[0].roomId);
+      return next;
+    });
+  }
+
+  function addRow() {
+    setRoomSelections((prev) => [...prev, { roomId: "", count: 1 }]);
+  }
 
   /* ── When checkin changes, clear a checkout that's now invalid ──────────── */
   function handleCheckinChange(d: Date | undefined) {
@@ -174,12 +247,20 @@ export default function Booking() {
 
     const phoneText = phone.trim() || "Not provided";
 
+    const roomLines = roomSelections
+      .filter((sel) => sel.roomId !== "")
+      .map((sel) => {
+        const room = rooms.find((r) => r.id === sel.roomId);
+        return `  – ${room?.label ?? sel.roomId} × ${sel.count} room${sel.count > 1 ? "s" : ""}`;
+      });
+
     const lines = [
       `Hello Dandeli Inn!`,
       ``,
       `I would like to check availability for a stay:`,
-      `• Guest Name: ${name.trim()}`,
-      `• Room Type: ${selectedRoom.label}`,
+      `• Guest Name: ${name.trim() || "Not provided"}`,
+      `• Rooms:`,
+      ...roomLines,
       `• Check-in:  ${formatDate(checkin)}`,
       `• Check-out: ${formatDate(checkout)}`,
       `• Nights:    ${nights}`,
@@ -212,7 +293,7 @@ export default function Booking() {
             Book Your Stay
           </h2>
           <p className="mt-3 text-sand-200/90 max-w-md mx-auto text-sm md:text-base">
-            Pick your room and dates to get an instant price estimate, then
+            Pick your rooms and dates to get an instant price estimate, then
             check availability on WhatsApp.
           </p>
         </motion.div>
@@ -231,12 +312,14 @@ export default function Booking() {
               htmlFor="guest-name"
               className="block text-sm font-medium text-sand-200 mb-1.5"
             >
-              Full Name <span className="text-gold-400">*</span>
+              Full Name{" "}
+              <span className="text-sand-400/80 text-xs font-normal">
+                (Optional)
+              </span>
             </label>
             <input
               id="guest-name"
               type="text"
-              required
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -244,32 +327,92 @@ export default function Booking() {
             />
           </div>
 
-          {/* Room Type */}
+          {/* ── Room Selection Rows ────────────────────────────────────────── */}
           <div>
-            <label
-              htmlFor="room-type-select"
-              className="block text-sm font-medium text-sand-200 mb-1.5"
-            >
+            <p className="block text-sm font-medium text-sand-200 mb-2">
               Room Type <span className="text-gold-400">*</span>
-            </label>
-            <select
-              id="room-type-select"
-              required
-              value={selectedRoomId}
-              onChange={(e) => setSelectedRoomId(e.target.value)}
-              className="w-full bg-forest-950/60 border border-sand-100/20 rounded-xl px-4 py-3 text-sand-100 focus-visible:outline-2 focus-visible:outline-river-400 text-sm cursor-pointer transition-colors"
-            >
-              {rooms.map((room) => (
-                <option
-                  key={room.id}
-                  value={room.id}
-                  className="bg-sand-900 text-sand-100 py-1"
-                >
-                  {room.label} — ₹{room.pricePerNight.toLocaleString("en-IN")}
-                  /night
-                </option>
-              ))}
-            </select>
+            </p>
+
+            <div className="space-y-2">
+              {roomSelections.map((sel, i) => {
+                const room = rooms.find((r) => r.id === sel.roomId) ?? rooms[0];
+                return (
+                  <div
+                    key={i}
+                    className="flex items-center gap-2"
+                  >
+                    {/* Room type dropdown */}
+                    <select
+                      id={i === 0 ? "room-type-select" : `room-type-select-${i}`}
+                      value={sel.roomId}
+                      onChange={(e) => updateRoomId(i, e.target.value)}
+                      className="flex-1 min-w-0 bg-forest-950/60 border border-sand-100/20 rounded-xl px-3 py-3 text-sand-100 focus-visible:outline-2 focus-visible:outline-river-400 text-sm cursor-pointer transition-colors"
+                    >
+                      <option value="" disabled className="bg-sand-900 text-sand-400">
+                        Select Room
+                      </option>
+                      {rooms.map((r) => (
+                        <option
+                          key={r.id}
+                          value={r.id}
+                          className="bg-sand-900 text-sand-100"
+                        >
+                          {r.label} — ₹{r.pricePerNight.toLocaleString("en-IN")}/night
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Quantity stepper */}
+                    <div className="flex items-center shrink-0 bg-forest-950/60 border border-sand-100/20 rounded-xl overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => updateCount(i, sel.count - 1)}
+                        disabled={sel.count <= 1}
+                        aria-label="Decrease room count"
+                        className="px-3 py-3 text-sand-200 hover:text-sand-100 hover:bg-sand-100/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-base leading-none"
+                      >
+                        −
+                      </button>
+                      <span className="px-2 text-sm font-semibold text-sand-100 min-w-[1.75rem] text-center tabular-nums">
+                        {sel.count}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => updateCount(i, sel.count + 1)}
+                        disabled={sel.count >= 5}
+                        aria-label="Increase room count"
+                        className="px-3 py-3 text-sand-200 hover:text-sand-100 hover:bg-sand-100/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors text-base leading-none"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {/* Remove row — only when more than one row exists */}
+                    {roomSelections.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeRow(i)}
+                        aria-label={`Remove ${room.label} row`}
+                        className="shrink-0 w-9 h-9 flex items-center justify-center rounded-xl text-sand-300/70 hover:text-sand-100 hover:bg-sand-100/15 transition-colors text-lg leading-none"
+                      >
+                        ×
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Add another room row */}
+            {roomSelections.length < rooms.length && (
+              <button
+                type="button"
+                onClick={addRow}
+                className="mt-2 text-xs font-medium text-gold-400 hover:text-gold-300 transition-colors flex items-center gap-1"
+              >
+                <span className="text-base leading-none">+</span> Add another room type
+              </button>
+            )}
           </div>
 
           {/* Check-in / Check-out — side by side on sm+ */}
@@ -318,17 +461,32 @@ export default function Booking() {
           </div>
 
           {/* ── Cost Breakdown ─────────────────────────────────────────────── */}
-          <div className="rounded-xl bg-sand-100/10 border border-sand-100/20 p-4 sm:p-5 space-y-3">
+          <div className="rounded-xl bg-sand-100/10 border border-sand-100/20 p-4 sm:p-5 space-y-2">
             {nights > 0 ? (
-              <div className="flex items-center justify-between text-xs sm:text-sm text-sand-200">
-                <span>
-                  {selectedRoom.label} × {nights} night{nights > 1 ? "s" : ""}
-                </span>
-                <span className="font-mono">
-                  ₹{selectedRoom.pricePerNight.toLocaleString("en-IN")} ×{" "}
-                  {nights}
-                </span>
-              </div>
+              <>
+                {roomSelections.map((sel, i) => {
+                  const room = rooms.find((r) => r.id === sel.roomId);
+                  if (!room) return null;
+                  const subtotal = room.pricePerNight * nights * sel.count;
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-center justify-between text-xs sm:text-sm text-sand-200"
+                    >
+                      <span>
+                        {room.label}
+                        {sel.count > 1 && (
+                          <span className="text-sand-300/70"> × {sel.count} rooms</span>
+                        )}{" "}
+                        × {nights} night{nights > 1 ? "s" : ""}
+                      </span>
+                      <span className="font-mono shrink-0 ml-2">
+                        ₹{subtotal.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                  );
+                })}
+              </>
             ) : (
               <p className="text-xs text-sand-300/70 italic">
                 Select check-in and check-out dates to see an estimate.
