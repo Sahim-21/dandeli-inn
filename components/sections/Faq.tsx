@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     q: "Do you provide hot water?",
-    a: "Yes, hot water is available from 7:00 AM to 11:00 AM.",
+    a: "Yes, hot water is available 24 hours a day.",
   },
   {
     q: "How far is the lodge from Dandeli Bus Stand?",

@@ -125,7 +125,7 @@ const features: Feature[] = [
   {
     icon: <HotWaterIcon />,
     title: "Hot water",
-    description: "Hot water available from 7:00 AM to 8:00 AM.",
+    description: "Hot water available 24 hours a day for your comfort.",
   },
   {
     icon: <HousekeepingIcon />,

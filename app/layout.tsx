@@ -115,7 +115,7 @@ const faqSchema = {
       name: "Do you provide hot water?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, hot water is available from 7:00 AM to 11:00 AM.",
+        text: "Yes, hot water is available 24 hours a day.",
       },
     },
     {
