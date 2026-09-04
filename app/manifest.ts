@@ -1,11 +1,11 @@
 import type { MetadataRoute } from "next";
+import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Dandeli Inn",
-    short_name: "Dandeli Inn",
-    description:
-      "Budget-friendly stay in Dandeli, Bangur Nagar — 300m from the bus stand.",
+    name: SITE_NAME,
+    short_name: SITE_NAME,
+    description: SITE_DESCRIPTION,
     start_url: "/",
     display: "standalone",
     background_color: "#f5edd6", // sand-100

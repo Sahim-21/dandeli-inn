@@ -2,6 +2,13 @@ import type { Metadata } from "next";
 import { Playfair_Display, DM_Sans } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
 import { BookingProvider } from "@/lib/BookingContext";
+import { rooms } from "@/lib/rooms";
+import {
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_URL,
+} from "@/lib/site";
 import "./globals.css";
 
 /* ─── Fonts ──────────────────────────────────────────────────────────────── */
@@ -20,52 +27,61 @@ const dmSans = DM_Sans({
   weight: ["300", "400", "500", "600"],
 });
 
-/* ─── Site constants ─────────────────────────────────────────────────────── */
-const SITE_URL = "https://dandeliinn.com";
-
 /* ─── Metadata ───────────────────────────────────────────────────────────── */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Dandeli Inn | Budget Stay Near Dandeli Bus Stand, Bangur Nagar",
-  description:
-    "Budget-friendly rooms in Dandeli, Bangur Nagar — 300m from the bus stand. AC & Non-AC rooms from ₹899/night. Free Wi-Fi, hot water, CCTV security. Book on WhatsApp.",
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   alternates: {
-    canonical: "/",
+    canonical: `${SITE_URL}/`,
   },
   openGraph: {
     type: "website",
-    url: SITE_URL,
-    siteName: "Dandeli Inn",
-    title: "Dandeli Inn | Budget Stay Near Dandeli Bus Stand, Bangur Nagar",
-    description:
-      "Budget-friendly rooms in Dandeli, Bangur Nagar — 300m from the bus stand. AC & Non-AC rooms from ₹899/night. Free Wi-Fi, hot water, CCTV security.",
+    locale: "en_IN",
+    url: `${SITE_URL}/`,
+    siteName: SITE_NAME,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     images: [
       {
-        url: `${SITE_URL}/images/hero.jpg`,
+        url: "/images/hero.jpg",
         width: 1200,
         height: 630,
-        alt: "Dandeli Inn — lush forest canopy near Dandeli Wildlife Sanctuary",
+        alt: "Dandeli Inn — stay near Dandeli Bus Stand in Bangur Nagar",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dandeli Inn | Budget Stay Near Dandeli Bus Stand, Bangur Nagar",
-    description:
-      "Budget-friendly rooms in Dandeli, Bangur Nagar — 300m from the bus stand. AC & Non-AC rooms from ₹899/night.",
-    images: [`${SITE_URL}/images/hero.jpg`],
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/images/hero.jpg"],
   },
 };
 
-/* ─── JSON-LD — LodgingBusiness ─────────────────────────────────────────── */
+/* ─── JSON-LD — Hotel / LocalBusiness ───────────────────────────────────── */
 const lodgingSchema = {
   "@context": "https://schema.org",
-  "@type": "LodgingBusiness",
-  name: "Dandeli Inn",
+  "@type": ["Hotel", "LocalBusiness"],
+  name: SITE_NAME,
+  alternateName: "Dandeli Holiday Inn Lodge",
+  description: SITE_DESCRIPTION,
   image: `${SITE_URL}/images/hero.jpg`,
-  url: SITE_URL,
+  url: `${SITE_URL}/`,
   telephone: "+91 72591 09986",
+  email: "stay@dandeliinn.com",
   priceRange: "₹899–₹2999",
+  currenciesAccepted: "INR",
+  checkinTime: "11:00",
+  checkoutTime: "11:00",
   address: {
     "@type": "PostalAddress",
     streetAddress: "J.N Road, opp. Sunday Market, Bangur Nagar",
@@ -79,11 +95,47 @@ const lodgingSchema = {
     latitude: 15.2457258,
     longitude: 74.6227294,
   },
+  hasMap: "https://www.google.com/maps/place/?q=place_id:ChIJUau4rbUhvzsRxXDL6lUkipg",
   aggregateRating: {
     "@type": "AggregateRating",
     ratingValue: "4.5",
     reviewCount: "292",
+    bestRating: "5",
+    worstRating: "1",
   },
+  amenityFeature: [
+    { "@type": "LocationFeatureSpecification", name: "Free Wi-Fi", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Hot water", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Air conditioning", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Flat-screen TV", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Daily housekeeping", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Power backup", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Free parking", value: true },
+    { "@type": "LocationFeatureSpecification", name: "CCTV", value: true },
+  ],
+  containsPlace: rooms.map((room) => ({
+    "@type": "HotelRoom",
+    name: room.label,
+    occupancy: {
+      "@type": "QuantitativeValue",
+      value: room.sharing,
+    },
+    amenityFeature: room.ac
+      ? [
+          {
+            "@type": "LocationFeatureSpecification",
+            name: "Air conditioning",
+            value: true,
+          },
+        ]
+      : [],
+    offers: {
+      "@type": "Offer",
+      price: room.pricePerNight,
+      priceCurrency: "INR",
+      url: `${SITE_URL}/#rooms`,
+    },
+  })),
   sameAs: [
     "https://www.google.com/maps/place/?q=place_id:ChIJUau4rbUhvzsRxXDL6lUkipg",
   ],
@@ -166,12 +218,10 @@ export default function RootLayout({
       className={`${playfair.variable} ${dmSans.variable} h-full antialiased`}
     >
       <head>
-        {/* LodgingBusiness structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(lodgingSchema) }}
         />
-        {/* FAQPage structured data */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
