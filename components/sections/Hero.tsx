@@ -29,7 +29,7 @@ export default function Hero() {
     >
       {/* ── Background image ─────────────────────────────────────────── */}
       <Image
-        src="/images/hero.jpg"
+        src="/images/ragh.jpeg"
         alt="Lush forest canopy with sunlight rays filtering through the trees at Dandeli Wildlife Sanctuary"
         fill
         priority
